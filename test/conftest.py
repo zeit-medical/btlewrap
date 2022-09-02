@@ -18,5 +18,6 @@ def pytest_addoption(parser):
 
 @pytest.fixture(scope="class")
 def mac(request):
-    """Get command line parameter and store it in class"""
-    request.cls.mac = request.config.getoption("--mac")
+    """Get command line parameter and store it in class
+    Defaults to Gerrit's Muse S"""
+    request.cls.mac = request.config.getoption("--mac") or "00:55:DA:BB:37:BF"
