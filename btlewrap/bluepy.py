@@ -79,14 +79,14 @@ class BluepyBackend(AbstractBackend):
         return self._peripheral.readCharacteristic(handle)
 
     @wrap_exception
-    def write_handle(self, handle: int, value: bytes):
+    def write_handle(self, handle: int, value: bytes, with_response=True):
         """Write a handle from the device.
 
         You must be connected to do this.
         """
         if self._peripheral is None:
             raise BluetoothBackendException("not connected to backend")
-        return self._peripheral.writeCharacteristic(handle, value, True)
+        return self._peripheral.writeCharacteristic(handle, value, with_response)
 
     @wrap_exception
     def wait_for_notification(self, handle: int, delegate, notification_timeout: float):
