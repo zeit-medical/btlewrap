@@ -1,6 +1,7 @@
 """Common functionality for integration tests"""
 import pytest
-from btlewrap import BluepyBackend
+from btlewrap import BluepyBackend, GatttoolBackend
+from typing import Union
 
 
 class CommonTests:
@@ -11,7 +12,7 @@ class CommonTests:
 
     def setUp(self):  # pylint: disable=invalid-name
         """Just create type definition for self.backend."""
-        self.backend = None  # type: BluepyBackend
+        self.backend: Union[BluepyBackend, GatttoolBackend]
         raise NotImplementedError()
 
     def test_check_backend(self):
@@ -35,11 +36,10 @@ class CommonTests:
         self.backend.disconnect()
 
     @pytest.mark.usefixtures("mac")
-    def test_read_0x38(self):
-        """Read from handle 0x38.
-
-        On the miflora devices this get the battery and version info."""
+    def test_read_handle(self):
+        """Read from handle 0x19.
+        on Muse S, this is the telemetry handle"""
         self.backend.connect(self.mac)
-        result = self.backend.read_handle(0x38)
+        result = self.backend.read_handle(0x19)
         self.assertIsNotNone(result)
-        self.assertGreater(len(result), 5)
+        self.assertGreater(len(result), 1)
