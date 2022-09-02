@@ -4,14 +4,15 @@ is part of bluez on Linux.
 No other operating systems are supported at the moment
 """
 
-from threading import current_thread
-import os
 import logging
+import os
 import re
-import time
-from typing import Callable, List, Tuple, Optional
-from subprocess import Popen, PIPE, TimeoutExpired, run
 import signal
+import time
+from subprocess import PIPE, Popen, TimeoutExpired, run
+from threading import current_thread
+from typing import Callable, List, Optional, Tuple
+
 from btlewrap.base import AbstractBackend, BluetoothBackendException
 
 _LOGGER = logging.getLogger(__name__)
@@ -56,7 +57,8 @@ class GatttoolBackend(AbstractBackend):
     def connect(self, mac: str):
         """Connect to sensor.
 
-        Connection handling is not required when using gatttool, but we still need the mac
+        Connection handling is not required when
+        using gatttool, but we still need the mac
         """
         self._mac = mac
 
@@ -91,7 +93,8 @@ class GatttoolBackend(AbstractBackend):
         _LOGGER.debug("Enter write_ble (%s)", current_thread())
 
         while attempt <= self.retries:
-            cmd = "gatttool --device={} --addr-type={} --char-write-req -a {} -n {} --adapter={}".format(
+            cmd = "gatttool --device={} --addr-type={}\
+                 --char-write-req -a {} -n {} --adapter={}".format(
                 self._mac,
                 self.address_type,
                 self.byte_to_handle(handle),
@@ -156,7 +159,8 @@ class GatttoolBackend(AbstractBackend):
         _LOGGER.debug("Enter write_ble (%s)", current_thread())
 
         while attempt <= self.retries:
-            cmd = "gatttool --device={} --addr-type={} --char-write-req -a {} -n {} --adapter={} --listen".format(
+            cmd = "gatttool --device={} --addr-type={}\
+                 --char-write-req -a {} -n {} --adapter={} --listen".format(
                 self._mac,
                 self.address_type,
                 self.byte_to_handle(handle),
@@ -213,15 +217,12 @@ class GatttoolBackend(AbstractBackend):
         @param: process_output - the raw output from a listen commad of GattTool
         which may look like this:
             Characteristic value was written successfully
-            Notification handle = 0x000e value: 54 3d 32 37 2e 33 20 48 3d 32 37 2e 30 00
-            Notification handle = 0x000e value: 54 3d 32 37 2e 32 20 48 3d 32 37 2e 32 00
-            Notification handle = 0x000e value: 54 3d 32 37 2e 33 20 48 3d 32 37 2e 31 00
-            Notification handle = 0x000e value: 54 3d 32 37 2e 32 20 48 3d 32 37 2e 33 00
-            Notification handle = 0x000e value: 54 3d 32 37 2e 33 20 48 3d 32 37 2e 31 00
-            Notification handle = 0x000e value: 54 3d 32 37 2e 31 20 48 3d 32 37 2e 34 00
+            Notification handle = 0x000e value: 54 3d 32 37 2e
+            33 20 48 3d 32 37 2e 30 00
+            ...
 
-
-            This method strips the fist line and strips the 'Notification handle = 0x000e value: ' from each line
+            This method strips the fist line and strips the
+            'Notification handle = 0x000e value: ' from each line
         @returns a processed string only containing the values.
         """
         data = []
@@ -248,7 +249,8 @@ class GatttoolBackend(AbstractBackend):
         _LOGGER.debug("Enter read_ble (%s)", current_thread())
 
         while attempt <= self.retries:
-            cmd = "gatttool --device={} --addr-type={} --char-read -a {} --adapter={}".format(
+            cmd = "gatttool --device={} --addr-type={}\
+                 --char-read -a {} --adapter={}".format(
                 self._mac, self.address_type, self.byte_to_handle(handle), self.adapter
             )
             _LOGGER.debug(

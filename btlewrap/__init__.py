@@ -1,5 +1,6 @@
 """Public interface for btlewrap."""
 import sys
+
 from btlewrap.version import __version__  # noqa: F401
 
 # This check must be run first, so that it fails before loading the other modules.
@@ -13,20 +14,10 @@ if sys.version_info < (3, 4):
     )
 
 # pylint: disable=wrong-import-position
-from btlewrap.base import (  # noqa: F401,E402
-    BluetoothBackendException,
-)
-
-from btlewrap.bluepy import (
-    BluepyBackend,
-)
-from btlewrap.gatttool import (
-    GatttoolBackend,
-)
-from btlewrap.pygatt import (
-    PygattBackend,
-)
-
+from btlewrap.base import BluetoothBackendException  # noqa: F401,E402
+from btlewrap.bluepy import BluepyBackend
+from btlewrap.gatttool import GatttoolBackend
+from btlewrap.pygatt import PygattBackend
 
 _ALL_BACKENDS = [BluepyBackend, GatttoolBackend, PygattBackend]
 

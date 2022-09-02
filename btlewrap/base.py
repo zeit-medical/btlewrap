@@ -85,7 +85,8 @@ class BluetoothBackendException(Exception):
 class AbstractBackend:
     """Abstract base class for talking to Bluetooth LE devices.
 
-    This class will be overridden by the different backends used by miflora and other btle sensors.
+    This class will be overridden by the different
+    backends used by miflora and other btle sensors.
     """
 
     _DATA_MODE_LISTEN = bytes([0x01, 0x00])
