@@ -3,6 +3,7 @@
 This backend uses the pygatt API: https://github.com/peplin/pygatt
 """
 from typing import Callable, Optional
+
 from btlewrap.base import AbstractBackend, BluetoothBackendException
 
 
@@ -36,7 +37,8 @@ class PygattBackend(AbstractBackend):
     @wrap_exception
     def __init__(self, adapter: Optional[str] = None, address_type: str = "public"):
         """Create a new instance.
-        Note: the parameter "adapter" is ignored, pygatt detects the right USB port automagically.
+        Note: the parameter "adapter" is ignored,
+        pygatt detects the right USB port automagically.
         """
         super(PygattBackend, self).__init__(adapter, address_type)
         self.check_backend()

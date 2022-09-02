@@ -1,6 +1,6 @@
 """Common functionality for integration tests"""
 import pytest
-from btlewrap import BluepyBackend, GatttoolBackend
+from btlewrap import BluepyBackend, GatttoolBackend, PygattBackend
 from typing import Union
 
 
@@ -12,7 +12,7 @@ class CommonTests:
 
     def setUp(self):  # pylint: disable=invalid-name
         """Just create type definition for self.backend."""
-        self.backend: Union[BluepyBackend, GatttoolBackend]
+        self.backend: Union[BluepyBackend, GatttoolBackend, PygattBackend]
         raise NotImplementedError()
 
     def test_check_backend(self):

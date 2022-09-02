@@ -1,8 +1,8 @@
-"""Backend for Miflora using the bluepy library."""
-import re
 import logging
+import re
 import time
-from typing import List, Tuple, Callable
+from typing import Callable, List, Tuple
+
 from btlewrap.base import AbstractBackend, BluetoothBackendException
 
 _LOGGER = logging.getLogger(__name__)
@@ -117,7 +117,7 @@ class BluepyBackend(AbstractBackend):
 
     @staticmethod
     @wrap_exception
-    def scan_for_devices(timeout: float, adapter="hci0") -> List[Tuple[str, str]]:
+    def scan_for_devices(timeout: int, adapter="hci0") -> List[Tuple[str, str]]:
         """Scan for bluetooth low energy devices.
 
         Note this must be run as root!"""
