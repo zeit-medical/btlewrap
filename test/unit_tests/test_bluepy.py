@@ -51,7 +51,7 @@ class TestBluepy(unittest.TestCase):
         """Test writing to a handle successfully."""
         backend = BluepyBackend()
         backend.connect(TEST_MAC)
-        self.assertTrue(backend.wait_for_notification(0xFF, None, 10))
+        self.assertTrue(backend.wait_for_notification(10))
         mock_peripheral.assert_called_with(TEST_MAC, addrType="public", iface=0)
 
     def test_supports_scanning(self):
