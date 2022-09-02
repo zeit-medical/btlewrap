@@ -1,6 +1,6 @@
 """Bluetooth Backends available for miflora and other btle sensors."""
 from threading import Lock
-from typing import List, Tuple, Optional
+from typing import List, Optional, Tuple
 
 
 class BluetoothInterface:
@@ -106,20 +106,27 @@ class AbstractBackend:
 
         Only required by some backends"""
 
-    def write_handle(self, handle: int, value: bytes):
+    def write_handle(self, handle: int, value: bytes, with_response=False):
         """Write a value to a handle.
 
         You must be connected to a device first."""
         raise NotImplementedError
 
-    def wait_for_notification(self, handle: int, delegate, notification_timeout: float):
-        """registers as a listener and calls the delegate's handleNotification
-        for each notification received
-        @param handle - the handle to use to register for notifications
-        @param delegate - the delegate object's handleNotification is called for every notification received
-        @param notification_timeout - wait this amount of seconds for notifications
+    def wait_for_notification(self, notification_timeout: float):
+        """registers as a listener and calls the delegate's
+        handleNotification for each notification received
+        @param handle - the handle to use to register for
+        notifications
+        @param delegate - the delegate object's handleNotification
+        is called for every notification received
+        @param notification_timeout - wait this amount of
+        seconds for notifications
 
         """
+        raise NotImplementedError
+
+    def subscribe_to_notifications(self, handle: int, delegate):
+        """TODO write doc"""
         raise NotImplementedError
 
     def read_handle(self, handle: int) -> bytes:
@@ -142,7 +149,8 @@ class AbstractBackend:
     ) -> List[Tuple[str, str]]:
         """Scan for additional devices.
 
-        Returns a list of all the mac addresses of Xiaomi Mi Flower sensor that could be found.
+        Returns a list of all the mac addresses of
+        sensors that could be found.
         """
         raise NotImplementedError
 

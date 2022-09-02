@@ -2,6 +2,7 @@
 
 This backend uses the pygatt API: https://github.com/peplin/pygatt
 """
+import time
 from typing import Callable, Optional
 
 from btlewrap.base import AbstractBackend, BluetoothBackendException
@@ -86,12 +87,25 @@ class PygattBackend(AbstractBackend):
         return self._device.char_read_handle(handle)
 
     @wrap_exception
-    def write_handle(self, handle: int, value: bytes):
+    def write_handle(self, handle: int, value: bytes, with_response=False):
         """Write a handle to the device."""
         if not self.is_connected():
             raise BluetoothBackendException("Not connected to device!")
-        self._device.char_write_handle(handle, value, True)
+        self._device.char_write_handle(handle, value, with_response)
         return True
+
+    @wrap_exception
+    def wait_for_notification(self, notification_timeout: float):
+        if self._device is None:
+            raise BluetoothBackendException("not connected to backend")
+        # nothing to do. automatically calls delegate
+        time.sleep(notification_timeout)
+
+    @wrap_exception
+    def subscribe_to_notifications(self, handle: int, delegate):
+        if self._device is None:
+            raise BluetoothBackendException("not connected to backend")
+        self._device.subscribe_handle(handle - 1, callback=delegate.handleNotification)
 
     @staticmethod
     def check_backend() -> bool:
