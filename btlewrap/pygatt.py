@@ -47,7 +47,7 @@ class PygattBackend(AbstractBackend):
         import pygatt
 
         self._adapter = pygatt.BGAPIBackend()  # type: pygatt.BGAPIBackend
-        self._adapter.start()
+        self._adapter.start(reset=False)
         self._device = None
 
     def __del__(self):
